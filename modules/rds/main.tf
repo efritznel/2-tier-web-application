@@ -43,6 +43,7 @@ resource "aws_db_instance" "db" {
   publicly_accessible     = false
   skip_final_snapshot     = true
   backup_retention_period = 0
+  multi_az = true  # <-- ADD THIS (AWS creates the standby automatically
 
   vpc_security_group_ids = [var.db_sg_id] # Replace with your desired security group ID
 
