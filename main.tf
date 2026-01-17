@@ -1,5 +1,5 @@
 module "vpc" {
-    source = "../modules/vpc"
+    source = "./modules/vpc"
     region = var.region
     project_name = var.project_name
     vpc_cidr         = var.vpc_cidr
@@ -12,7 +12,7 @@ module "vpc" {
 }
 
 module "nat" {
-  source = "../modules/nat"
+  source = "./modules/nat"
 
   pub_sub_1a_id = module.vpc.pub_sub_1a_id
   igw_id        = module.vpc.igw_id
@@ -25,18 +25,18 @@ module "nat" {
 }
 
 module "security-group" {
-  source = "../modules/security-group"
+  source = "./modules/security-group"
   vpc_id = module.vpc.vpc_id
 }
 
 # creating Key for instances
 module "key" {
-  source = "../modules/key"
+  source = "./modules/key"
 }
 
 # Creating Application Load balancer
 module "alb" {
-  source         = "../modules/alb"
+  source         = "./modules/alb"
   project_name   = module.vpc.project_name
   alb_sg_id      = module.security-group.alb_sg_id
   pub_sub_1a_id = module.vpc.pub_sub_1a_id
@@ -45,7 +45,7 @@ module "alb" {
 }
 
 module "asg" {
-  source         = "../modules/asg"
+  source         = "./modules/asg"
   project_name   = module.vpc.project_name
   key_name       = module.key.key_name
   client_sg_id   = module.security-group.client_sg_id
@@ -58,7 +58,7 @@ module "asg" {
 # creating RDS instance
 
 module "rds" {
-  source         = "../modules/rds"
+  source         = "./modules/rds"
   db_sg_id       = module.security-group.db_sg_id
   pri_sub_5a_id = module.vpc.pri_sub_5a_id
   pri_sub_6b_id = module.vpc.pri_sub_6b_id
@@ -69,7 +69,7 @@ module "rds" {
 
 # create cloudfront distribution 
 module "cloudfront" {
-  source = "../modules/cloudfront"
+  source = "./modules/cloudfront"
   certificate_domain_name = var.certificate_domain_name
   alb_domain_name = module.alb.alb_dns_name
   additional_domain_name = var.additional_domain_name
@@ -83,7 +83,7 @@ module "cloudfront" {
 # Add record in route 53 hosted zone
 
 module "route53" {
-  source = "../modules/route53"
+  source = "./modules/route53"
   cloudfront_domain_name = module.cloudfront.cloudfront_domain_name
   cloudfront_hosted_zone_id = module.cloudfront.cloudfront_hosted_zone_id
 
@@ -91,7 +91,7 @@ module "route53" {
 
 # WAF module
 module "waf" {
-  source = "../modules/waf"
+  source = "./modules/waf"
   name        = "${module.vpc.project_name}-waf"
   description = "WAF for CloudFront distribution"
   metric_name = "${module.vpc.project_name}WAFMetric"

@@ -3,7 +3,7 @@ resource "aws_launch_template" "lt_name" {
   image_id      = var.ami
   instance_type = var.cpu
   key_name      = var.key_name
-  user_data     = filebase64("../modules/asg/config.sh")
+  user_data     = filebase64("./modules/asg/config.sh")
 
 
   vpc_security_group_ids = [var.client_sg_id]
