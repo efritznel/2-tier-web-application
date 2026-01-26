@@ -1,4 +1,5 @@
 # 2-tier-web-application
+![Project Image](https://github.com/efritznel/2-tier-web-application/blob/main/2tier%20diagram.gif)
 # Module vpc
     - Create vpc
     - Internet gateway
