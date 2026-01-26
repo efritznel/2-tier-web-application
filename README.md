@@ -112,7 +112,9 @@ CloudFront → WAF → ALB (public subnets) → EC2 (private subnets via ASG) �
 
 # Deployment Steps
 terraform init
+
 terraform plan
+
 terraform apply
 
 After deployment, Terraform outputs will include:
